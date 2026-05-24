@@ -122,21 +122,60 @@ const contactForm = document.getElementById("contact-form");
 if (contactForm) {
   const contactSuccess = document.getElementById("contact-success");
 
-  contactForm.addEventListener("submit", (event) => {
+  // Listen for the form submission
+  contactForm.addEventListener("submit", async (event) => {
+    // Prevent the page from refreshing when the form is submitted
     event.preventDefault();
 
+    // Check if the form passes basic HTML validation (like required fields)
     if (!contactForm.checkValidity()) {
       contactForm.reportValidity();
       return;
     }
 
+    // Extract the data from the form fields
     const formData = new FormData(contactForm);
     const data = Object.fromEntries(formData.entries());
+    
+    // Map the form data to our database columns
+    const full_name = data.fullName;
+    const email = data.email;
+    const subject = data.subject;
+    const message = data.message;
 
-    console.log(data);
+    // Send the data to our Supabase database table named 'form'
+    const response = await supabaseClient
+      .from('form')
+      .insert([{ full_name, email, subject, message }]);
 
-    contactForm.hidden = true;
-    contactSuccess.hidden = false;
+    // Log the full response object to the console so we can debug if needed
+    console.log("Supabase response:", response);
+
+    // Check if Supabase returned an error
+    if (response.error) {
+      // Find or create an error message element
+      let errorMsg = document.getElementById("contact-error");
+      if (!errorMsg) {
+        errorMsg = document.createElement("p");
+        errorMsg.id = "contact-error";
+        errorMsg.style.color = "red";
+        errorMsg.style.marginTop = "1rem";
+        contactForm.appendChild(errorMsg);
+      }
+      // Show a red error message
+      errorMsg.textContent = "Something went wrong. Please try again.";
+    } else {
+      // Hide the form and show the existing green success message
+      contactForm.hidden = true;
+      contactSuccess.hidden = false;
+      
+      // Reset the form fields
+      contactForm.reset();
+      
+      // Clear any previous error message if it exists
+      const errorMsg = document.getElementById("contact-error");
+      if (errorMsg) errorMsg.remove();
+    }
   });
 }
 
@@ -162,4 +201,169 @@ if (navbar && navbarToggle && navbarMenu) {
     });
   });
 }
- 
+
+// === ADMIN DASHBOARD ===
+document.addEventListener("DOMContentLoaded", () => {
+  const adminGrid = document.getElementById("admin-inbox-grid");
+  
+  // Only run the admin logic if the inbox grid actually exists on the page
+  if (adminGrid) {
+    const messageCounter = document.getElementById("message-counter");
+    const unreadToggle = document.getElementById("unread-only-toggle");
+
+    // Helper to format dates to relative time like "2 hours ago"
+    function timeAgo(dateParam) {
+      if (!dateParam) return "";
+      const date = typeof dateParam === 'object' ? dateParam : new Date(dateParam);
+      const today = new Date();
+      const seconds = Math.round((today - date) / 1000);
+      const minutes = Math.round(seconds / 60);
+      const hours = Math.round(minutes / 60);
+      const days = Math.round(hours / 24);
+
+      if (seconds < 60) return "just now";
+      else if (minutes < 60) return minutes + " minutes ago";
+      else if (hours < 24) return hours + " hours ago";
+      else if (days < 7) return days + " days ago";
+      else {
+        // e.g. 21 May 2026
+        return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+      }
+    }
+
+    // Render a single message card
+    function createCard(msg) {
+      const card = document.createElement("div");
+      // Add visual state class based on is_read
+      card.className = `admin-card ${msg.is_read ? 'card--read' : 'card--unread'}`;
+      card.id = `msg-${msg.id}`;
+
+      // Card inner HTML structure
+      card.innerHTML = `
+        <div class="admin-card__top">
+          <h3 class="admin-card__subject">${msg.subject}</h3>
+          <span class="admin-card__time">${timeAgo(msg.created_at)}</span>
+        </div>
+        <p class="admin-card__sender">${msg.full_name} &middot; ${msg.email}</p>
+        <p class="admin-card__body">${msg.message}</p>
+      `;
+
+      // Action container
+      const actions = document.createElement("div");
+      actions.className = "admin-card__actions";
+
+      // If it's unread, show the "Mark as Read" button
+      if (!msg.is_read) {
+        const btn = document.createElement("button");
+        btn.className = "admin-card__btn";
+        btn.textContent = "Mark as Read";
+        
+        // Handle "Mark as Read" click
+        btn.addEventListener("click", async () => {
+          // Disable button immediately to prevent double-clicks
+          btn.disabled = true;
+          btn.textContent = "Marking...";
+          
+          // Send an UPDATE to Supabase
+          const { error } = await supabaseClient
+            .from('form')
+            .update({ is_read: true })
+            .eq('id', msg.id);
+
+          if (error) {
+            console.error("Error marking as read:", error);
+            btn.disabled = false;
+            btn.textContent = "Mark as Read";
+            alert("Failed to mark as read.");
+          } else {
+            // Update the card visually without full reload
+            card.classList.remove('card--unread');
+            card.classList.add('card--read');
+            // Remove the button since it's now read
+            btn.remove();
+          }
+        });
+        
+        actions.appendChild(btn);
+      }
+      
+      card.appendChild(actions);
+      return card;
+    }
+
+    // Fetch messages from Supabase
+    async function fetchMessages() {
+      // Show loading text
+      adminGrid.innerHTML = "<p>Loading messages...</p>";
+      
+      // Query the 'form' table ordered by newest first
+      const { data, error } = await supabaseClient
+        .from('form')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error("Error fetching messages:", error);
+        adminGrid.innerHTML = "<p>Failed to load messages.</p>";
+        return;
+      }
+
+      // Update total counter
+      if (messageCounter) {
+        messageCounter.textContent = `📬 ${data.length} messages`;
+      }
+
+      // Clear the loading text
+      adminGrid.innerHTML = "";
+
+      // Create and append a card for each message
+      if (data.length === 0) {
+        adminGrid.innerHTML = "<p>No messages found.</p>";
+      } else {
+        data.forEach(msg => {
+          const card = createCard(msg);
+          adminGrid.appendChild(card);
+        });
+      }
+    }
+
+    // Handle the "Unread only" toggle
+    if (unreadToggle) {
+      unreadToggle.addEventListener("change", (e) => {
+        if (e.target.checked) {
+          adminGrid.classList.add("show-unread-only");
+        } else {
+          adminGrid.classList.remove("show-unread-only");
+        }
+      });
+    }
+
+    // --- Login Security Logic ---
+    const loginSection = document.getElementById("admin-login-section");
+    const mainContent = document.getElementById("admin-main-content");
+    const loginForm = document.getElementById("admin-login-form");
+    const loginError = document.getElementById("login-error");
+
+    if (loginForm) {
+      loginForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const idVal = document.getElementById("login-id").value;
+        const passVal = document.getElementById("login-password").value;
+
+        // Simple client-side check (Beginner friendly)
+        if (idVal === "atmond" && passVal === "nopass") {
+          // Success! Hide login, show dashboard, fetch messages
+          loginSection.style.display = "none";
+          mainContent.style.display = "block";
+          fetchMessages();
+        } else {
+          // Show error
+          loginError.style.display = "block";
+        }
+      });
+    } else {
+      // Fallback if login form is missing but admin grid exists
+      fetchMessages();
+    }
+  }
+});

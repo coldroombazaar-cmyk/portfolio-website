@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact | UX Designer</title>
+  <title>Admin Dashboard | UX Designer</title>
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -48,7 +48,8 @@
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="projects.html">Projects</a></li>
-        <li><a href="contact.html" class="active">Contact</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="admin.html" class="active">Admin</a></li>
         <li>
           <button class="theme-toggle" aria-label="Switch to dark mode">
       <span class="theme-toggle__icon dark-icon">🌙</span>
@@ -60,71 +61,43 @@
 
   </nav>
 
-  <main class="contact-page">
+  <section id="admin-login-section" style="min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 20px;">
+    <div class="contact-form-panel" style="width: 100%; max-width: 400px; padding: 40px;">
+      <h2 style="text-align: center; margin-bottom: 24px;">Admin Login</h2>
+      <form id="admin-login-form">
+        <div class="contact-form__field">
+          <input type="text" id="login-id" placeholder=" " required />
+          <label for="login-id">Admin ID</label>
+        </div>
+        <div class="contact-form__field">
+          <input type="password" id="login-password" placeholder=" " required />
+          <label for="login-password">Password</label>
+        </div>
+        <p id="login-error" style="color: var(--danger); font-size: 14px; margin-bottom: 16px; text-align: center; display: none;">Invalid Admin ID or Password</p>
+        <button type="submit" class="contact-form__submit" style="width: 100%;">Access Dashboard</button>
+      </form>
+    </div>
+  </section>
 
-    <header class="contact-header">
-      <h1 class="contact-header__title">Let's build something good.</h1>
-      <p class="contact-header__subtitle">Project enquiries, mentorship, or just a chai-chat. I reply within 24 hours.</p>
-    </header>
-
-    <section class="contact-layout">
-
-      <aside class="contact-card reveal">
-        <h2 class="contact-card__heading">Get in touch</h2>
-        <p class="contact-card__item">
-          <span class="contact-card__label">Email</span>
-          <a href="mailto:hello@atanudesign.com">hello@atanudesign.com</a>
-        </p>
-        <p class="contact-card__item">
-          <span class="contact-card__label">Location</span>
-          Bengaluru, India
-        </p>
-        <ul class="contact-card__social">
-          <li><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="LinkedIn">💼</a></li>
-          <li><a href="https://dribbble.com" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Dribbble">🎨</a></li>
-          <li><a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Twitter">🐦</a></li>
-        </ul>
-      </aside>
-
-      <div class="contact-form-panel reveal">
-        <form id="contact-form" class="contact-form">
-          <div class="contact-form__field">
-            <input type="text" id="full-name" name="fullName" placeholder=" " required>
-            <label for="full-name">Full Name</label>
-          </div>
-
-          <div class="contact-form__field">
-            <input type="email" id="email" name="email" placeholder=" " required>
-            <label for="email">Email Address</label>
-          </div>
-
-          <div class="contact-form__field">
-            <select id="subject" name="subject" required>
-              <option value="" disabled selected>Select a subject</option>
-              <option value="Project Inquiry">Project Inquiry</option>
-              <option value="Collaboration">Collaboration</option>
-              <option value="Mentorship">Mentorship</option>
-              <option value="Speaking">Speaking</option>
-              <option value="Other">Other</option>
-            </select>
-            <label for="subject">Subject</label>
-          </div>
-
-          <div class="contact-form__field">
-            <textarea id="message" name="message" rows="5" placeholder=" " required></textarea>
-            <label for="message">Message</label>
-          </div>
-
-          <button type="submit" class="contact-form__submit">Send Message</button>
-        </form>
-
-        <p id="contact-success" class="contact-success" hidden>
-          ✅ Thanks! Your message was sent. I'll reply within 24 hours.
-        </p>
-      </div>
-
+  <main class="admin-main" id="admin-main-content" style="display: none;">
+    <section class="admin-header">
+      <h1>Inbox</h1>
+      <p>All contact-form messages, newest first.</p>
     </section>
 
+    <section class="admin-toolbar">
+      <div id="message-counter">📬 0 messages</div>
+      <label class="admin-toggle">
+        <input type="checkbox" id="unread-only-toggle">
+        <span class="admin-toggle-label">Unread only</span>
+      </label>
+    </section>
+
+    <section class="admin-content">
+      <div id="admin-inbox-grid" class="admin-grid">
+        <!-- Cards will be injected here by JS -->
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
@@ -141,6 +114,7 @@
             <li><a href="about.html">About</a></li>
             <li><a href="projects.html">Projects</a></li>
             <li><a href="contact.html">Contact</a></li>
+            <li><a href="admin.html">Admin</a></li>
         <li>
           <button class="theme-toggle" aria-label="Switch to dark mode">
       <span class="theme-toggle__icon dark-icon">🌙</span>
