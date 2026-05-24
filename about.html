@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Atanu | UX Designer</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!--
+    STICKY NAVIGATION BAR
+    The <nav> element groups all main site links in one landmark region
+    for accessibility (screen readers announce it as "navigation").
+  -->
+  <nav class="navbar">
+
+    <!--
+      BRAND LINK
+      Clicking the name always returns visitors to the home page (index.html).
+      Placed on the left as the visual anchor of the site identity.
+    -->
+    <a href="index.html" class="navbar__brand">Atanu Mondal</a>
+    <button
+      type="button"
+      class="navbar__toggle"
+      aria-expanded="false"
+      aria-controls="navbar-menu"
+      aria-label="Open navigation menu"
+    >
+      <span class="navbar__icon navbar__icon--menu" aria-hidden="true">☰</span>
+      <span class="navbar__icon navbar__icon--close" aria-hidden="true">✕</span>
+    </button>
+
+    <!--
+      PRIMARY LINK LIST
+      An unordered list (<ul>) is the semantic HTML pattern for a group of links.
+      Each <li> wraps one destination so links stay structured and styleable.
+    -->
+    <div class="navbar__menu" id="navbar-menu">
+      <ul class="navbar__links">
+        <!--
+          ACTIVE STATE
+          The "active" class marks the current page so CSS can underline it.
+          On about.html, About is the active link.
+        -->
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html" class="active">About</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li>
+          <button class="theme-toggle" aria-label="Switch to dark mode">
+      <span class="theme-toggle__icon dark-icon">🌙</span>
+      <span class="theme-toggle__icon light-icon">☀️</span>
+    </button>
+        </li>
+      </ul>
+    </div>
+
+  </nav>
+
+  <main class="about-page">
+
+    <header class="about-header">
+      <h1 class="about-header__title">About Atanu</h1>
+      <p class="about-header__subtitle">Designer. Researcher. Coffee-driven optimist.</p>
+    </header>
+
+    
+    <section class="about-stats">
+      <div class="stat"><span class="stat-num" data-target="5">0</span>+ years experience</div>
+      <div class="stat"><span class="stat-num" data-target="30">0</span>+ shipped projects</div>
+      <div class="stat"><span class="stat-num" data-target="12">0</span> awards</div>
+    </section>
+
+    <section class="about-bio">
+      <img
+        class="about-bio__image"
+        src="https://placehold.co/400x400/4f46e5/ffffff?text=Atanu"
+        alt="Portrait of Atanu"
+        width="400"
+        height="400"
+      >
+      <div class="about-bio__text">
+        <p>I design products at the intersection of business goals and human emotion. My happiest projects are the ones where a measurable metric (conversion, retention, time-on-task) moves <em>and</em> users send unsolicited thank-you messages.</p>
+        <p>Before design, I trained as a psychology major — which still shows up in how I run research. I believe the best interviews feel like good conversations, not interrogations.</p>
+        <p>When I'm not in Figma, you'll find me sketching in cafés, running ultra-marathons very slowly, or trying (and failing) to keep my plants alive.</p>
+      </div>
+    </section>
+
+    <section class="about-timeline">
+      <h2 class="about-timeline__heading">Career Timeline</h2>
+      <ol class="timeline">
+        <li class="timeline__entry reveal">
+          <span class="timeline__year">2024</span>
+          <div class="timeline__content">
+            <h3 class="timeline__role">Senior UX Designer, Razorpay</h3>
+            <p class="timeline__description">Leading checkout redesign for 8M users.</p>
+          </div>
+        </li>
+        <li class="timeline__entry reveal">
+          <span class="timeline__year">2022</span>
+          <div class="timeline__content">
+            <h3 class="timeline__role">UX Designer, Byju's</h3>
+            <p class="timeline__description">Owned learner onboarding for the K-12 app.</p>
+          </div>
+        </li>
+        <li class="timeline__entry reveal">
+          <span class="timeline__year">2021</span>
+          <div class="timeline__content">
+            <h3 class="timeline__role">Product Designer, Practo</h3>
+            <p class="timeline__description">Designed doctor-patient chat MVP.</p>
+          </div>
+        </li>
+        <li class="timeline__entry reveal">
+          <span class="timeline__year">2020</span>
+          <div class="timeline__content">
+            <h3 class="timeline__role">Design Intern, Zomato</h3>
+            <p class="timeline__description">Reshaped restaurant onboarding flow.</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div class="site-footer__columns">
+        <div class="site-footer__brand">
+          <p class="site-footer__name">Atanu Mondal</p>
+          <p class="site-footer__tagline">Designing calm products for noisy industries.</p>
+        </div>
+        <div class="site-footer__column">
+          <h2 class="site-footer__heading">Quick links</h2>
+          <ul class="site-footer__links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        <li>
+          <button class="theme-toggle" aria-label="Switch to dark mode">
+      <span class="theme-toggle__icon dark-icon">🌙</span>
+      <span class="theme-toggle__icon light-icon">☀️</span>
+    </button>
+        </li>
+          </ul>
+        </div>
+        <div class="site-footer__column">
+          <h2 class="site-footer__heading">Social</h2>
+          <ul class="site-footer__social">
+            <li><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">💼</span> LinkedIn</a></li>
+            <li><a href="https://dribbble.com" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">🎨</span> Dribbble</a></li>
+            <li><a href="https://twitter.com" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">🐦</span> Twitter</a></li>
+            <li><a href="mailto:hello@atanudesign.com"><span aria-hidden="true">✉️</span> Email</a></li>
+          </ul>
+        </div>
+      </div>
+      <p class="site-footer__bottom">© 2026 Atanu Mondal — Built with curiosity and Cursor. <span class="footer-heart">♥</span></p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
