@@ -14,7 +14,7 @@
     The <nav> element groups all main site links in one landmark region
     for accessibility (screen readers announce it as "navigation").
   -->
-  <nav class="navbar">
+  <nav class="navbar" id="public-nav-container">
 
     <!--
       BRAND LINK
@@ -63,23 +63,23 @@
   <main class="contact-page">
 
     <header class="contact-header">
-      <h1 class="contact-header__title">Let's build something good.</h1>
-      <p class="contact-header__subtitle">Project enquiries, mentorship, or just a chai-chat. I reply within 24 hours.</p>
+      <h1 class="contact-header__title" id="pub-contact-page-title">Let's build something good.</h1>
+      <p class="contact-header__subtitle" id="pub-contact-page-subtitle">Project enquiries, mentorship, or just a chai-chat. I reply within 24 hours.</p>
     </header>
 
     <section class="contact-layout">
 
       <aside class="contact-card reveal">
-        <h2 class="contact-card__heading">Get in touch</h2>
+        <h2 class="contact-card__heading" id="pub-contact-heading">Get in touch</h2>
         <p class="contact-card__item">
-          <span class="contact-card__label">Email</span>
-          <a href="mailto:hello@atanudesign.com">hello@atanudesign.com</a>
+          <span class="contact-card__label" id="pub-contact-email-label">Email</span>
+          <a href="mailto:hello@atanudesign.com" id="pub-contact-email-address">hello@atanudesign.com</a>
         </p>
         <p class="contact-card__item">
-          <span class="contact-card__label">Location</span>
-          Bengaluru, India
+          <span class="contact-card__label" id="pub-contact-location-label">Location</span>
+          <span id="pub-contact-location-text">Bengaluru, India</span>
         </p>
-        <ul class="contact-card__social">
+        <ul class="contact-card__social" id="pub-contact-social-list">
           <li><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="LinkedIn">💼</a></li>
           <li><a href="https://dribbble.com" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Dribbble">🎨</a></li>
           <li><a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Twitter">🐦</a></li>
@@ -119,7 +119,7 @@
         </form>
 
         <p id="contact-success" class="contact-success" hidden>
-          ✅ Thanks! Your message was sent. I'll reply within 24 hours.
+          <span id="pub-contact-success-message">✅ Thanks! Your message was sent. I'll reply within 24 hours.</span>
         </p>
       </div>
 
@@ -127,7 +127,7 @@
 
   </main>
 
-  <footer class="site-footer">
+  <footer class="site-footer" id="public-footer-container">
     <div class="site-footer__inner">
       <div class="site-footer__columns">
         <div class="site-footer__brand">
@@ -163,6 +163,7 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js"></script>
   <script src="script.js"></script>
 </body>

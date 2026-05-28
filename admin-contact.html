@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Page CMS | UX Designer</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    if (localStorage.getItem("adminLoggedIn") !== "true") {
+      window.location.href = "admin.html";
+    }
+  </script>
+</head>
+
+<body>
+
+  <div class="admin-dashboard" id="admin-main-content">
+    <aside class="admin-sidebar">
+      <h2 class="admin-sidebar__title">Admin Panel</h2>
+      <nav class="admin-sidebar__nav">
+        <a href="admin.html" class="admin-sidebar__link">Messages</a>
+        <a href="admin-home.html" class="admin-sidebar__link">Home Page</a>
+        <a href="admin-about.html" class="admin-sidebar__link">About Section</a>
+        <a href="admin-projects.html" class="admin-sidebar__link">Project Cards</a>
+        <a href="admin-contact.html" class="admin-sidebar__link active">Contact Page</a>
+        <a href="admin-navbar.html" class="admin-sidebar__link">Navbar</a>
+        <a href="admin-footer.html" class="admin-sidebar__link">Footer</a>
+        <a href="admin-splash.html" class="admin-sidebar__link">Splash Screen</a>
+      </nav>
+      <button id="admin-logout-btn" class="admin-sidebar__logout">Logout</button>
+    </aside>
+
+    <main class="admin-content-area">
+      <header class="admin-header">
+        <div>
+          <h1>Contact Page CMS</h1>
+          <p>Customize your contact page text, social links, and form subject options</p>
+        </div>
+      </header>
+
+      <div id="contact-cms-status" style="display: none; padding: 12px; border-radius: 4px; margin-bottom: 24px; font-weight: 500;"></div>
+
+      <!-- Card 1: Page Header & Basic Info Settings -->
+      <div class="admin-card about-cms-card" style="margin-bottom: 24px;">
+        <h3 class="about-cms-card__title">Page Headers & Info</h3>
+        <form id="contact-settings-form">
+          <input type="hidden" id="contact-settings-id">
+          
+          <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px;">
+            <div class="admin-form-group" style="flex: 1; min-width: 250px; margin-bottom: 0;">
+              <label for="contact-page-title">Page Title *</label>
+              <input type="text" id="contact-page-title" required placeholder="e.g. Let's build something good.">
+            </div>
+            
+            <div class="admin-form-group" style="flex: 2; min-width: 350px; margin-bottom: 0;">
+              <label for="contact-page-subtitle">Page Subtitle *</label>
+              <input type="text" id="contact-page-subtitle" required placeholder="e.g. Project enquiries...">
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px;">
+            <div class="admin-form-group" style="flex: 1; min-width: 200px; margin-bottom: 0;">
+              <label for="contact-heading">Contact Card Heading *</label>
+              <input type="text" id="contact-heading" required placeholder="e.g. Get in touch">
+            </div>
+            <div class="admin-form-group" style="flex: 2; min-width: 350px; margin-bottom: 0;">
+              <label for="contact-success-message">Success Message *</label>
+              <input type="text" id="contact-success-message" required placeholder="e.g. ✅ Thanks! Your message was sent...">
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px;">
+            <div class="admin-form-group" style="flex: 1; min-width: 200px; margin-bottom: 0;">
+              <label for="contact-email-label">Email Label *</label>
+              <input type="text" id="contact-email-label" required placeholder="e.g. Email">
+            </div>
+            <div class="admin-form-group" style="flex: 2; min-width: 300px; margin-bottom: 0;">
+              <label for="contact-email-address">Email Address *</label>
+              <input type="email" id="contact-email-address" required placeholder="e.g. hello@atanudesign.com">
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+            <div class="admin-form-group" style="flex: 1; min-width: 200px; margin-bottom: 0;">
+              <label for="contact-location-label">Location Label *</label>
+              <input type="text" id="contact-location-label" required placeholder="e.g. Location">
+            </div>
+            <div class="admin-form-group" style="flex: 2; min-width: 300px; margin-bottom: 0;">
+              <label for="contact-location-text">Location Text *</label>
+              <input type="text" id="contact-location-text" required placeholder="e.g. Bengaluru, India">
+            </div>
+          </div>
+          
+          <div style="display: flex; justify-content: flex-end; margin-top: 24px;">
+            <button type="submit" id="btn-save-settings" class="admin-btn admin-btn--primary">Save Settings</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Card 2: Social Links -->
+      <div class="admin-card about-cms-card" style="margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 24px;">
+          <h3 class="about-cms-card__title" style="margin: 0; border: none; padding: 0;">Contact Social Links</h3>
+          <button type="button" id="btn-add-social" class="admin-btn admin-btn--primary" style="padding: 6px 12px; font-size: 14px;">+ Add Social Link</button>
+        </div>
+
+        <div class="admin-table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th style="width: 80px; text-align: center;">Icon</th>
+                <th>Label</th>
+                <th>URL</th>
+                <th style="width: 100px; text-align: center;">Order</th>
+                <th style="width: 120px; text-align: center;">Status</th>
+                <th style="width: 160px; text-align: center;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="social-table-body">
+              <tr>
+                <td colspan="6" style="text-align: center;">Loading social links...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Card 3: Subject Options -->
+      <div class="admin-card about-cms-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 24px;">
+          <h3 class="about-cms-card__title" style="margin: 0; border: none; padding: 0;">Subject Dropdown Options</h3>
+          <button type="button" id="btn-add-subject" class="admin-btn admin-btn--primary" style="padding: 6px 12px; font-size: 14px;">+ Add Subject Option</button>
+        </div>
+
+        <div class="admin-table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Option Label</th>
+                <th>Option Value</th>
+                <th style="width: 100px; text-align: center;">Order</th>
+                <th style="width: 120px; text-align: center;">Status</th>
+                <th style="width: 160px; text-align: center;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="subject-table-body">
+              <tr>
+                <td colspan="5" style="text-align: center;">Loading subject options...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Add/Edit Social Link Modal -->
+  <div class="admin-modal" id="social-modal">
+    <div class="admin-modal__content">
+      <div class="admin-modal__header">
+        <h2 id="social-modal-title">Add Social Link</h2>
+        <button type="button" class="admin-modal__close" id="social-modal-close">&times;</button>
+      </div>
+      <form id="social-form">
+        <input type="hidden" id="social-id">
+        
+        <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+          <div class="admin-form-group" style="flex: 1; min-width: 120px;">
+            <label for="social-icon">Icon (Emoji) *</label>
+            <input type="text" id="social-icon" required placeholder="e.g. 💼">
+          </div>
+          
+          <div class="admin-form-group" style="flex: 2; min-width: 240px;">
+            <label for="social-label">Label *</label>
+            <input type="text" id="social-label" required placeholder="e.g. LinkedIn">
+          </div>
+        </div>
+
+        <div class="admin-form-group">
+          <label for="social-url">URL *</label>
+          <input type="url" id="social-url" required placeholder="https://linkedin.com/in/you">
+        </div>
+        
+        <div style="display: flex; gap: 16px;">
+          <div class="admin-form-group" style="flex: 1;">
+            <label for="social-status">Status</label>
+            <select id="social-status">
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+          <div class="admin-form-group" style="flex: 1;">
+            <label for="social-display-order">Display Order</label>
+            <input type="number" id="social-display-order" value="0" min="0">
+          </div>
+        </div>
+        
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
+          <button type="button" class="admin-btn admin-btn--outline" id="social-modal-cancel">Cancel</button>
+          <button type="submit" class="admin-btn admin-btn--primary">Save Link</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add/Edit Subject Option Modal -->
+  <div class="admin-modal" id="subject-modal">
+    <div class="admin-modal__content">
+      <div class="admin-modal__header">
+        <h2 id="subject-modal-title">Add Subject Option</h2>
+        <button type="button" class="admin-modal__close" id="subject-modal-close">&times;</button>
+      </div>
+      <form id="subject-form">
+        <input type="hidden" id="subject-id">
+        
+        <div class="admin-form-group">
+          <label for="subject-label">Option Label * (What users see)</label>
+          <input type="text" id="subject-label" required placeholder="e.g. Project Inquiry">
+        </div>
+
+        <div class="admin-form-group">
+          <label for="subject-value">Option Value * (Data sent in form)</label>
+          <input type="text" id="subject-value" required placeholder="e.g. Project Inquiry">
+        </div>
+        
+        <div style="display: flex; gap: 16px;">
+          <div class="admin-form-group" style="flex: 1;">
+            <label for="subject-status">Status</label>
+            <select id="subject-status">
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+          <div class="admin-form-group" style="flex: 1;">
+            <label for="subject-display-order">Display Order</label>
+            <input type="number" id="subject-display-order" value="0" min="0">
+          </div>
+        </div>
+        
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
+          <button type="button" class="admin-btn admin-btn--outline" id="subject-modal-cancel">Cancel</button>
+          <button type="submit" class="admin-btn admin-btn--primary">Save Option</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="supabase-config.js"></script>
+  <script src="contact-cms.js"></script>
+</body>
+
+</html>

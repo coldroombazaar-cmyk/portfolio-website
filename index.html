@@ -13,7 +13,7 @@
     The <nav> element groups all main site links in one landmark region
     for accessibility (screen readers announce it as "navigation").
   -->
-  <nav class="navbar">
+  <nav class="navbar" id="public-nav-container">
 
     <!--
       BRAND LINK
@@ -59,68 +59,74 @@
 
   </nav>
 
-  <section class="hero">
+  <section class="hero" id="home-hero-section">
     <div class="hero__content">
-      <p class="hero__eyebrow">PORTFOLIO 2026</p>
-      <h1 class="hero__headline">I design products people actually enjoy using.</h1>
-      <p class="hero__subheadline">Senior UX Designer with 5 years of experience in fintech, edtech and healthcare.</p>
-      <a href="projects.html" class="hero__cta">See My Work →</a>
+      <p class="hero__eyebrow" id="home-hero-eyebrow">PORTFOLIO 2026</p>
+      <h1 class="hero__headline" id="home-hero-headline">I design products people actually enjoy using.</h1>
+      <p class="hero__subheadline" id="home-hero-subheadline">Senior UX Designer with 5 years of experience in fintech, edtech and healthcare.</p>
+      <a href="projects.html" class="hero__cta" id="home-hero-cta">See My Work →</a>
       <div class="hero__scroll"><div class="hero__scroll-dot"></div></div>
     </div>
   </section>
 
-  <section class="skills">
-    <h2 class="skills__heading">What I Do</h2>
-    <p class="skills__tagline">A toolkit shaped by 5 years of shipping real products.</p>
+  <section class="skills" id="home-skills-section">
+    <h2 class="skills__heading" id="home-skills-heading">What I Do</h2>
+    <p class="skills__tagline" id="home-skills-tagline">A toolkit shaped by 5 years of shipping real products.</p>
 
-    <div class="skills__grid">
+    <!-- Premium Auto-Slider Carousel -->
+    <div class="skills-slider-container" id="home-skills-slider">
+      <!-- Arrow Controls -->
+      <button type="button" class="skills-slider-arrow prev" id="btn-skills-prev" aria-label="Previous skill">←</button>
+      <button type="button" class="skills-slider-arrow next" id="btn-skills-next" aria-label="Next skill">→</button>
+      
+      <!-- Overflow Window -->
+      <div class="skills-slider-window">
+        <div class="skills-slider-track" id="home-skills-track">
+          <!-- Fallback hardcoded slides for zero-flicker resilience offline -->
+          <article class="skills__card reveal">
+            <span class="skills__icon" aria-hidden="true">🎨</span>
+            <h3 class="skills__name">User Research</h3>
+            <p class="skills__description">Interviews, surveys and usability tests that uncover real user needs.</p>
+          </article>
 
-      <!-- Card 1: User Research -->
-      <article class="skills__card reveal">
-        <span class="skills__icon" aria-hidden="true">🎨</span>
-        <h3 class="skills__name">User Research</h3>
-        <p class="skills__description">Interviews, surveys and usability tests that uncover real user needs.</p>
-      </article>
+          <article class="skills__card reveal">
+            <span class="skills__icon" aria-hidden="true">🖌️</span>
+            <h3 class="skills__name">UI Design</h3>
+            <p class="skills__description">Pixel-perfect interfaces built in Figma with reusable design systems.</p>
+          </article>
 
-      <!-- Card 2: UI Design -->
-      <article class="skills__card reveal">
-        <span class="skills__icon" aria-hidden="true">🖌️</span>
-        <h3 class="skills__name">UI Design</h3>
-        <p class="skills__description">Pixel-perfect interfaces built in Figma with reusable design systems.</p>
-      </article>
+          <article class="skills__card reveal">
+            <span class="skills__icon" aria-hidden="true">🧭</span>
+            <h3 class="skills__name">Information Architecture</h3>
+            <p class="skills__description">Clear sitemaps and flows that make complex products feel simple.</p>
+          </article>
 
-      <!-- Card 3: Information Architecture -->
-      <article class="skills__card reveal">
-        <span class="skills__icon" aria-hidden="true">🧭</span>
-        <h3 class="skills__name">Information Architecture</h3>
-        <p class="skills__description">Clear sitemaps and flows that make complex products feel simple.</p>
-      </article>
+          <article class="skills__card reveal">
+            <span class="skills__icon" aria-hidden="true">📐</span>
+            <h3 class="skills__name">Prototyping</h3>
+            <p class="skills__description">High-fidelity, clickable prototypes that validate ideas before a single line of code.</p>
+          </article>
 
-      <!-- Card 4: Prototyping -->
-      <article class="skills__card reveal">
-        <span class="skills__icon" aria-hidden="true">📐</span>
-        <h3 class="skills__name">Prototyping</h3>
-        <p class="skills__description">High-fidelity, clickable prototypes that validate ideas before a single line of code.</p>
-      </article>
+          <article class="skills__card reveal">
+            <span class="skills__icon" aria-hidden="true">♿</span>
+            <h3 class="skills__name">Accessibility</h3>
+            <p class="skills__description">WCAG-compliant designs that work for everyone, on every device.</p>
+          </article>
 
-      <!-- Card 5: Accessibility -->
-      <article class="skills__card reveal">
-        <span class="skills__icon" aria-hidden="true">♿</span>
-        <h3 class="skills__name">Accessibility</h3>
-        <p class="skills__description">WCAG-compliant designs that work for everyone, on every device.</p>
-      </article>
-
-      <!-- Card 6: Design Systems -->
-      <article class="skills__card reveal">
-        <span class="skills__icon" aria-hidden="true">📊</span>
-        <h3 class="skills__name">Design Systems</h3>
-        <p class="skills__description">Scalable component libraries that keep teams shipping fast and consistently.</p>
-      </article>
-
+          <article class="skills__card reveal">
+            <span class="skills__icon" aria-hidden="true">📊</span>
+            <h3 class="skills__name">Design Systems</h3>
+            <p class="skills__description">Scalable component libraries that keep teams shipping fast and consistently.</p>
+          </article>
+        </div>
+      </div>
+      
+      <!-- Dots indicators -->
+      <div class="skills-slider-dots" id="home-skills-dots"></div>
     </div>
   </section>
 
-  <footer class="site-footer">
+  <footer class="site-footer" id="public-footer-container">
     <div class="site-footer__inner">
       <div class="site-footer__columns">
         <div class="site-footer__brand">
@@ -156,6 +162,8 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
   <script src="script.js"></script>
 </body>
 </html> 

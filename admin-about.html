@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin About CMS | UX Designer</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    if (localStorage.getItem("adminLoggedIn") !== "true") {
+      window.location.href = "admin.html";
+    }
+  </script>
+</head>
+
+<body>
+
+  <div class="admin-dashboard" id="admin-main-content">
+    <aside class="admin-sidebar">
+      <h2 class="admin-sidebar__title">Admin Panel</h2>
+      <nav class="admin-sidebar__nav">
+        <a href="admin.html" class="admin-sidebar__link">Messages</a>
+        <a href="admin-home.html" class="admin-sidebar__link">Home Page</a>
+        <a href="admin-about.html" class="admin-sidebar__link active">About Section</a>
+        <a href="admin-projects.html" class="admin-sidebar__link">Project Cards</a>
+        <a href="admin-contact.html" class="admin-sidebar__link">Contact Page</a>
+        <a href="admin-navbar.html" class="admin-sidebar__link">Navbar</a>
+        <a href="admin-footer.html" class="admin-sidebar__link">Footer</a>
+        <a href="admin-splash.html" class="admin-sidebar__link">Splash Screen</a>
+      </nav>
+      <button id="admin-logout-btn" class="admin-sidebar__logout">Logout</button>
+    </aside>
+
+    <main class="admin-content-area">
+      <form id="about-form">
+        <header class="admin-header about-cms-header">
+          <div>
+            <h1>About Section</h1>
+            <p>Manage stats, profile image, and biography text</p>
+          </div>
+          <button type="submit" class="admin-btn admin-btn--primary">Save Changes</button>
+        </header>
+
+        <div id="about-cms-status" style="display: none; padding: 12px; border-radius: 4px; margin-bottom: 24px; font-weight: 500;"></div>
+        
+        <input type="hidden" id="about-id">
+
+        <!-- Card 0: Page Header -->
+        <div class="admin-card about-cms-card">
+          <h3 class="about-cms-card__title">Page Header</h3>
+          
+          <div style="display: flex; gap: 24px; flex-wrap: wrap;">
+            <div class="admin-form-group" style="flex: 1; min-width: 250px; margin-bottom: 0;">
+              <label for="about-page-title-input">Page Title *</label>
+              <input type="text" id="about-page-title-input" required placeholder="About Atanu">
+            </div>
+            <div class="admin-form-group" style="flex: 2; min-width: 250px; margin-bottom: 0;">
+              <label for="about-page-subtitle-input">Page Subtitle *</label>
+              <input type="text" id="about-page-subtitle-input" required placeholder="Designer. Researcher. Coffee-driven optimist.">
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 1: Stats -->
+        <div class="admin-card about-cms-card">
+          <h3 class="about-cms-card__title">Stats</h3>
+          
+          <div class="about-stats-grid">
+            <div class="admin-form-group">
+              <label for="about-years-exp">Years Experience</label>
+              <input type="number" id="about-years-exp" required>
+            </div>
+            <div class="admin-form-group">
+              <label for="about-years-label">Years Label</label>
+              <input type="text" id="about-years-label" required>
+            </div>
+          </div>
+          
+          <div class="about-stats-grid">
+            <div class="admin-form-group">
+              <label for="about-shipped-projects">Shipped Projects</label>
+              <input type="number" id="about-shipped-projects" required>
+            </div>
+            <div class="admin-form-group">
+              <label for="about-shipped-label">Shipped Label</label>
+              <input type="text" id="about-shipped-label" required>
+            </div>
+          </div>
+          
+          <div class="about-stats-grid">
+            <div class="admin-form-group">
+              <label for="about-awards-count">Awards Count</label>
+              <input type="number" id="about-awards-count" required>
+            </div>
+            <div class="admin-form-group">
+              <label for="about-awards-label">Awards Label</label>
+              <input type="text" id="about-awards-label" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Profile Image -->
+        <div class="admin-card about-cms-card">
+          <h3 class="about-cms-card__title">Profile Image</h3>
+          
+          <div class="about-image-layout">
+            <div class="admin-form-group" style="flex: 1; margin-bottom: 0;">
+              <label for="about-profile-image">Profile Image URL</label>
+              <input type="text" id="about-profile-image" placeholder="https://..." required>
+              
+              <div class="about-upload-section">
+                <label for="about-local-image" class="about-upload-label">
+                  Choose Image From Computer
+                </label>
+                <input type="file" id="about-local-image" accept="image/png, image/jpeg, image/jpg, image/webp" style="display: none;">
+                
+                <div class="about-upload-controls">
+                  <span id="about-selected-filename">No file chosen</span>
+                  <button type="button" id="about-upload-btn" class="admin-btn admin-btn--outline" disabled>Upload Image</button>
+                </div>
+                
+                <div id="about-upload-status" class="about-upload-status-el" style="display: none;"></div>
+              </div>
+            </div>
+            <div class="about-image-preview">
+              <img id="about-image-preview-el" src="" alt="Preview">
+              <span id="about-image-placeholder">No Image</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Biography -->
+        <div class="admin-card about-cms-card">
+          <h3 class="about-cms-card__title">Biography</h3>
+          
+          <div class="admin-form-group">
+            <label for="about-p1">Paragraph 1 (HTML allowed)</label>
+            <textarea id="about-p1" class="about-textarea-p1" required></textarea>
+          </div>
+          
+          <div class="admin-form-group">
+            <label for="about-p2">Paragraph 2</label>
+            <textarea id="about-p2" class="about-textarea-p2" required></textarea>
+          </div>
+          
+          <div class="admin-form-group" style="margin-bottom: 0;">
+            <label for="about-p3">Paragraph 3</label>
+            <textarea id="about-p3" class="about-textarea-p3" required></textarea>
+          </div>
+        </div>
+
+      </form>
+
+      <!-- Card 4: Career Timeline -->
+      <div class="admin-card about-cms-card" style="margin-top: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 24px;">
+          <h3 class="about-cms-card__title" style="margin: 0; border: none; padding: 0;">Career Timeline</h3>
+          <button type="button" id="btn-add-timeline" class="admin-btn admin-btn--primary" style="padding: 6px 12px; font-size: 14px;">+ Add Timeline Item</button>
+        </div>
+        
+        <div class="admin-table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th style="width: 80px;">Year</th>
+                <th style="width: 180px;">Role</th>
+                <th style="width: 150px;">Company</th>
+                <th>Description</th>
+                <th style="width: 80px; text-align: center;">Order</th>
+                <th style="width: 100px; text-align: center;">Status</th>
+                <th style="width: 140px; text-align: center;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="timeline-table-body">
+              <tr>
+                <td colspan="7" style="text-align: center;">Loading timeline...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Timeline Add/Edit Modal -->
+  <div class="admin-modal" id="timeline-modal">
+    <div class="admin-modal__content">
+      <div class="admin-modal__header">
+        <h2 id="timeline-modal-title">Add Timeline Item</h2>
+        <button type="button" class="admin-modal__close" id="timeline-modal-close">&times;</button>
+      </div>
+      <form id="timeline-form">
+        <input type="hidden" id="timeline-id">
+        
+        <div class="admin-form-group">
+          <label for="timeline-year">Year *</label>
+          <input type="text" id="timeline-year" required placeholder="e.g. 2024">
+        </div>
+        
+        <div class="admin-form-group">
+          <label for="timeline-role">Role *</label>
+          <input type="text" id="timeline-role" required placeholder="e.g. Senior UX Designer">
+        </div>
+        
+        <div class="admin-form-group">
+          <label for="timeline-company">Company *</label>
+          <input type="text" id="timeline-company" required placeholder="e.g. Razorpay">
+        </div>
+        
+        <div class="admin-form-group">
+          <label for="timeline-description">Description</label>
+          <textarea id="timeline-description" placeholder="e.g. Leading checkout redesign for 8M users."></textarea>
+        </div>
+        
+        <div style="display: flex; gap: 16px;">
+          <div class="admin-form-group" style="flex: 1;">
+            <label for="timeline-status">Status</label>
+            <select id="timeline-status">
+              <option value="published">Published</option>
+              <option value="draft">Draft</option>
+            </select>
+          </div>
+          <div class="admin-form-group" style="flex: 1;">
+            <label for="timeline-display-order">Display Order</label>
+            <input type="number" id="timeline-display-order" value="0">
+          </div>
+        </div>
+        
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
+          <button type="button" class="admin-btn admin-btn--outline" id="timeline-modal-cancel">Cancel</button>
+          <button type="submit" class="admin-btn admin-btn--primary">Save Item</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="supabase-config.js"></script>
+  <script src="about-cms.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Home Page CMS | UX Designer</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    if (localStorage.getItem("adminLoggedIn") !== "true") {
+      window.location.href = "admin.html";
+    }
+  </script>
+</head>
+
+<body>
+
+  <div class="admin-dashboard" id="admin-main-content">
+    <aside class="admin-sidebar">
+      <h2 class="admin-sidebar__title">Admin Panel</h2>
+      <nav class="admin-sidebar__nav">
+        <a href="admin.html" class="admin-sidebar__link">Messages</a>
+        <a href="admin-home.html" class="admin-sidebar__link active">Home Page</a>
+        <a href="admin-about.html" class="admin-sidebar__link">About Section</a>
+        <a href="admin-projects.html" class="admin-sidebar__link">Project Cards</a>
+        <a href="admin-contact.html" class="admin-sidebar__link">Contact Page</a>
+        <a href="admin-navbar.html" class="admin-sidebar__link">Navbar</a>
+        <a href="admin-footer.html" class="admin-sidebar__link">Footer</a>
+        <a href="admin-splash.html" class="admin-sidebar__link">Splash Screen</a>
+      </nav>
+      <button id="admin-logout-btn" class="admin-sidebar__logout">Logout</button>
+    </aside>
+
+    <main class="admin-content-area">
+      <header class="admin-header">
+        <div>
+          <h1>Home Page CMS</h1>
+          <p>Customize your landing page Hero section text, CTAs, and Skills auto-slider carousel content</p>
+        </div>
+      </header>
+
+      <div id="home-cms-status" style="display: none; padding: 12px; border-radius: 4px; margin-bottom: 24px; font-weight: 500;"></div>
+
+      <!-- Card 1: Hero Settings -->
+      <div class="admin-card about-cms-card" style="margin-bottom: 24px;">
+        <h3 class="about-cms-card__title">Hero Settings</h3>
+        <form id="hero-settings-form">
+          <input type="hidden" id="hero-settings-id">
+          
+          <div style="display: flex; gap: 24px; align-items: center; margin-bottom: 20px; flex-wrap: wrap;">
+            <div class="admin-form-group" style="flex: 1; min-width: 250px; margin-bottom: 0;">
+              <label for="hero-eyebrow">Eyebrow Text *</label>
+              <input type="text" id="hero-eyebrow" required placeholder="e.g. PORTFOLIO 2026">
+            </div>
+            
+            <div class="admin-form-group" style="flex: 1; min-width: 150px; margin-bottom: 0; align-self: center; margin-top: 24px;">
+              <label class="admin-toggle">
+                <input type="checkbox" id="hero-enabled" checked>
+                <span class="admin-toggle-label">Enable Hero Section</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="admin-form-group" style="margin-bottom: 20px;">
+            <label for="hero-headline">Headline *</label>
+            <input type="text" id="hero-headline" required placeholder="e.g. I design products people enjoy using.">
+          </div>
+
+          <div class="admin-form-group" style="margin-bottom: 20px;">
+            <label for="hero-subheadline">Subheadline *</label>
+            <textarea id="hero-subheadline" required rows="2" style="resize: vertical;" placeholder="e.g. UX Designer with experience in fintech..."></textarea>
+          </div>
+
+          <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+            <div class="admin-form-group" style="flex: 1; min-width: 200px; margin-bottom: 0;">
+              <label for="hero-cta-text">CTA Button Text *</label>
+              <input type="text" id="hero-cta-text" required placeholder="e.g. See My Work →">
+            </div>
+            
+            <div class="admin-form-group" style="flex: 1; min-width: 200px; margin-bottom: 0;">
+              <label for="hero-cta-link">CTA Button Redirect Link *</label>
+              <input type="text" id="hero-cta-link" required placeholder="e.g. projects.html">
+            </div>
+          </div>
+          
+          <div style="display: flex; justify-content: flex-end; margin-top: 24px;">
+            <button type="submit" id="btn-save-hero" class="admin-btn admin-btn--primary">Save Hero Settings</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Card 2: Skills Section Heading / Tagline -->
+      <div class="admin-card about-cms-card" style="margin-bottom: 24px;">
+        <h3 class="about-cms-card__title">Skills Section Configuration</h3>
+        <form id="skills-section-form">
+          <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+            <div class="admin-form-group" style="flex: 1; min-width: 250px; margin-bottom: 0;">
+              <label for="skills-section-heading">Section Heading *</label>
+              <input type="text" id="skills-section-heading" required placeholder="e.g. What I Do">
+            </div>
+
+            <div class="admin-form-group" style="flex: 2; min-width: 320px; margin-bottom: 0;">
+              <label for="skills-section-tagline">Section Tagline *</label>
+              <input type="text" id="skills-section-tagline" required placeholder="e.g. A toolkit shaped by 5 years of shipping products.">
+            </div>
+          </div>
+          
+          <div style="display: flex; justify-content: flex-end; margin-top: 24px;">
+            <button type="submit" id="btn-save-skills-text" class="admin-btn admin-btn--primary">Save Section Text</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Card 3: Skill Cards Table -->
+      <div class="admin-card about-cms-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 24px;">
+          <h3 class="about-cms-card__title" style="margin: 0; border: none; padding: 0;">Skill Cards</h3>
+          <button type="button" id="btn-add-skill" class="admin-btn admin-btn--primary" style="padding: 6px 12px; font-size: 14px;">+ Add New Skill</button>
+        </div>
+
+        <div class="admin-table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th style="width: 80px; text-align: center;">Icon</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th style="width: 100px; text-align: center;">Display Order</th>
+                <th style="width: 120px; text-align: center;">Status</th>
+                <th style="width: 160px; text-align: center;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="skills-table-body">
+              <tr>
+                <td colspan="6" style="text-align: center;">Loading skill cards...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Add/Edit Skill Modal -->
+  <div class="admin-modal" id="skill-modal">
+    <div class="admin-modal__content">
+      <div class="admin-modal__header">
+        <h2 id="skill-modal-title">Add Skill</h2>
+        <button type="button" class="admin-modal__close" id="skill-modal-close">&times;</button>
+      </div>
+      <form id="skill-form">
+        <input type="hidden" id="skill-id">
+        
+        <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+          <div class="admin-form-group" style="flex: 1; min-width: 120px;">
+            <label for="skill-icon">Icon / Emoji *</label>
+            <input type="text" id="skill-icon" required placeholder="e.g. 🎨 or 💻">
+          </div>
+          
+          <div class="admin-form-group" style="flex: 2; min-width: 240px;">
+            <label for="skill-title">Skill Title *</label>
+            <input type="text" id="skill-title" required placeholder="e.g. User Research">
+          </div>
+        </div>
+
+        <div class="admin-form-group">
+          <label for="skill-description">Description *</label>
+          <textarea id="skill-description" required rows="3" style="resize: vertical;" placeholder="Brief summary of your skills and experience..."></textarea>
+        </div>
+        
+        <div style="display: flex; gap: 16px;">
+          <div class="admin-form-group" style="flex: 1;">
+            <label for="skill-status">Status</label>
+            <select id="skill-status">
+              <option value="published">Published</option>
+              <option value="draft">Draft</option>
+            </select>
+          </div>
+          <div class="admin-form-group" style="flex: 1;">
+            <label for="skill-display-order">Display Order</label>
+            <input type="number" id="skill-display-order" value="0" min="0">
+          </div>
+        </div>
+        
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
+          <button type="button" class="admin-btn admin-btn--outline" id="skill-modal-cancel">Cancel</button>
+          <button type="submit" class="admin-btn admin-btn--primary">Save Skill</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="supabase-config.js"></script>
+  <script src="home-cms.js"></script>
+</body>
+
+</html>

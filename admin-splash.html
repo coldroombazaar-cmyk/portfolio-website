@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Splash Screen CMS | UX Designer</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    if (localStorage.getItem("adminLoggedIn") !== "true") {
+      window.location.href = "admin.html";
+    }
+  </script>
+</head>
+
+<body>
+
+  <div class="admin-dashboard" id="admin-main-content">
+    <aside class="admin-sidebar">
+      <h2 class="admin-sidebar__title">Admin Panel</h2>
+      <nav class="admin-sidebar__nav">
+        <a href="admin.html" class="admin-sidebar__link">Messages</a>
+        <a href="admin-home.html" class="admin-sidebar__link">Home Page</a>
+        <a href="admin-about.html" class="admin-sidebar__link">About Section</a>
+        <a href="admin-projects.html" class="admin-sidebar__link">Project Cards</a>
+        <a href="admin-contact.html" class="admin-sidebar__link">Contact Page</a>
+        <a href="admin-navbar.html" class="admin-sidebar__link">Navbar</a>
+        <a href="admin-footer.html" class="admin-sidebar__link">Footer</a>
+        <a href="admin-splash.html" class="admin-sidebar__link active">Splash Screen</a>
+      </nav>
+      <button id="admin-logout-btn" class="admin-sidebar__logout">Logout</button>
+    </aside>
+
+    <main class="admin-content-area">
+      <header class="admin-header">
+        <div>
+          <h1>Splash Screen CMS</h1>
+          <p>Customize the page-load splash screen experience, text, and timing animations</p>
+        </div>
+      </header>
+
+      <div id="splash-cms-status" style="display: none; padding: 12px; border-radius: 4px; margin-bottom: 24px; font-weight: 500;"></div>
+
+      <div class="admin-card about-cms-card">
+        <h3 class="about-cms-card__title">Splash Screen Settings</h3>
+        <form id="splash-settings-form">
+          <input type="hidden" id="splash-id">
+
+          <div style="display: flex; gap: 24px; margin-bottom: 24px; flex-wrap: wrap;">
+            <div class="admin-form-group" style="flex: 1; min-width: 180px; margin-bottom: 0; align-self: center;">
+              <label class="admin-toggle">
+                <input type="checkbox" id="splash-enabled" checked>
+                <span class="admin-toggle-label">Enable Splash Screen</span>
+              </label>
+            </div>
+            
+            <div class="admin-form-group" style="flex: 1; min-width: 180px; margin-bottom: 0; align-self: center;">
+              <label class="admin-toggle">
+                <input type="checkbox" id="splash-once">
+                <span class="admin-toggle-label">Show Only Once Per Session</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="admin-form-group" style="margin-bottom: 24px;">
+            <label for="splash-text">Splash Text Title *</label>
+            <input type="text" id="splash-text" required placeholder="Atanu Mondal">
+          </div>
+
+          <div style="display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 24px;">
+            <div class="admin-form-group" style="flex: 1; min-width: 220px; margin-bottom: 0;">
+              <label for="splash-duration">Display Duration (in Milliseconds) *</label>
+              <input type="number" id="splash-duration" required min="100" max="10000" step="50" placeholder="900">
+              <small style="color: var(--text-muted); font-size: 12px; display: block; margin-top: 4px;">Time the text is completely static before starting fade-out (1s = 1000ms)</small>
+            </div>
+
+            <div class="admin-form-group" style="flex: 1; min-width: 220px; margin-bottom: 0;">
+              <label for="splash-fade-duration">Fade-Out Transition (in Milliseconds) *</label>
+              <input type="number" id="splash-fade-duration" required min="100" max="10000" step="50" placeholder="900">
+              <small style="color: var(--text-muted); font-size: 12px; display: block; margin-top: 4px;">Time it takes for the overlay to completely fade to transparency (1s = 1000ms)</small>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 16px; margin-top: 32px; border-top: 1px solid var(--border); padding-top: 24px;">
+            <button type="button" id="btn-preview-splash" class="admin-btn admin-btn--outline">Preview Splash</button>
+            <button type="submit" id="btn-save-splash" class="admin-btn admin-btn--primary">Save Settings</button>
+          </div>
+        </form>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="supabase-config.js"></script>
+  <script src="splash-cms.js"></script>
+</body>
+
+</html>

@@ -13,7 +13,7 @@
     The <nav> element groups all main site links in one landmark region
     for accessibility (screen readers announce it as "navigation").
   -->
-  <nav class="navbar">
+  <nav class="navbar" id="public-nav-container">
 
     <!--
       BRAND LINK
@@ -81,142 +81,13 @@
       </div>
     </div>
 
-    <div class="projects-grid">
-
-      <article class="project-card reveal">
-        <div class="project-card__image-wrapper">
-          <img
-          class="project-card__image"
-          src="https://placehold.co/640x360/4f46e5/ffffff?text=Razorpay+Checkout+2.0"
-          alt="Razorpay Checkout 2.0 project preview"
-          width="640"
-          height="360"
-        >
-        </div>
-        <div class="project-card__body">
-          <h3 class="project-card__title">Razorpay Checkout 2.0</h3>
-          <p class="project-card__description">Reducing payment drop-offs by 18%.</p>
-          <ul class="project-card__tags">
-            <li><span class="project-card__tag">Fintech</span></li>
-            <li><span class="project-card__tag">Research</span></li>
-            <li><span class="project-card__tag">Figma</span></li>
-          </ul>
-          <a href="#" class="project-card__link">View Case Study →</a>
-        </div>
-      </article>
-
-      <article class="project-card reveal">
-        <div class="project-card__image-wrapper">
-          <img
-          class="project-card__image"
-          src="https://placehold.co/640x360/0ea5e9/ffffff?text=Byju%27s+Onboarding"
-          alt="Byju's Onboarding project preview"
-          width="640"
-          height="360"
-        >
-        </div>
-        <div class="project-card__body">
-          <h3 class="project-card__title">Byju's Onboarding</h3>
-          <p class="project-card__description">New-learner activation up 27%.</p>
-          <ul class="project-card__tags">
-            <li><span class="project-card__tag">Edtech</span></li>
-            <li><span class="project-card__tag">UX Writing</span></li>
-            <li><span class="project-card__tag">Prototyping</span></li>
-          </ul>
-          <a href="#" class="project-card__link">View Case Study →</a>
-        </div>
-      </article>
-
-      <article class="project-card reveal">
-        <div class="project-card__image-wrapper">
-          <img
-          class="project-card__image"
-          src="https://placehold.co/640x360/10b981/ffffff?text=Practo+Doctor+Chat"
-          alt="Practo Doctor Chat project preview"
-          width="640"
-          height="360"
-        >
-        </div>
-        <div class="project-card__body">
-          <h3 class="project-card__title">Practo Doctor Chat</h3>
-          <p class="project-card__description">HIPAA-friendly chat MVP.</p>
-          <ul class="project-card__tags">
-            <li><span class="project-card__tag">Healthcare</span></li>
-            <li><span class="project-card__tag">IA</span></li>
-            <li><span class="project-card__tag">Wireframing</span></li>
-          </ul>
-          <a href="#" class="project-card__link">View Case Study →</a>
-        </div>
-      </article>
-
-      <article class="project-card reveal">
-        <div class="project-card__image-wrapper">
-          <img
-          class="project-card__image"
-          src="https://placehold.co/640x360/f59e0b/ffffff?text=Zomato+Restaurant+Hub"
-          alt="Zomato Restaurant Hub project preview"
-          width="640"
-          height="360"
-        >
-        </div>
-        <div class="project-card__body">
-          <h3 class="project-card__title">Zomato Restaurant Hub</h3>
-          <p class="project-card__description">Self-serve menu manager.</p>
-          <ul class="project-card__tags">
-            <li><span class="project-card__tag">Marketplace</span></li>
-            <li><span class="project-card__tag">Design System</span></li>
-          </ul>
-          <a href="#" class="project-card__link">View Case Study →</a>
-        </div>
-      </article>
-
-      <article class="project-card reveal">
-        <div class="project-card__image-wrapper">
-          <img
-          class="project-card__image"
-          src="https://placehold.co/640x360/ef4444/ffffff?text=Open+Banking+Dashboard"
-          alt="Open Banking Dashboard project preview"
-          width="640"
-          height="360"
-        >
-        </div>
-        <div class="project-card__body">
-          <h3 class="project-card__title">Open Banking Dashboard</h3>
-          <p class="project-card__description">B2B analytics, dark mode first.</p>
-          <ul class="project-card__tags">
-            <li><span class="project-card__tag">B2B</span></li>
-            <li><span class="project-card__tag">Data Viz</span></li>
-          </ul>
-          <a href="#" class="project-card__link">View Case Study →</a>
-        </div>
-      </article>
-
-      <article class="project-card reveal">
-        <div class="project-card__image-wrapper">
-          <img
-          class="project-card__image"
-          src="https://placehold.co/640x360/8b5cf6/ffffff?text=Accessibility+Audit+Toolkit"
-          alt="Accessibility Audit Toolkit project preview"
-          width="640"
-          height="360"
-        >
-        </div>
-        <div class="project-card__body">
-          <h3 class="project-card__title">Accessibility Audit Toolkit</h3>
-          <p class="project-card__description">Internal tool, 4.2★.</p>
-          <ul class="project-card__tags">
-            <li><span class="project-card__tag">A11y</span></li>
-            <li><span class="project-card__tag">Internal Tools</span></li>
-          </ul>
-          <a href="#" class="project-card__link">View Case Study →</a>
-        </div>
-      </article>
-
+    <div class="projects-grid" id="public-projects-grid">
+      <!-- Projects will be injected here dynamically by script.js -->
     </div>
 
   </main>
 
-  <footer class="site-footer">
+  <footer class="site-footer" id="public-footer-container">
     <div class="site-footer__inner">
       <div class="site-footer__columns">
         <div class="site-footer__brand">
@@ -252,6 +123,8 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

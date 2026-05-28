@@ -1,67 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard | UX Designer</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="admin.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
+
 <body>
 
-  <!--
-    STICKY NAVIGATION BAR
-    The <nav> element groups all main site links in one landmark region
-    for accessibility (screen readers announce it as "navigation").
-  -->
-  <nav class="navbar">
 
-    <!--
-      BRAND LINK
-      Clicking the name always returns visitors to the home page (index.html).
-      Placed on the left as the visual anchor of the site identity.
-    -->
-    <a href="index.html" class="navbar__brand">Atanu Mondal</a>
-    <button
-      type="button"
-      class="navbar__toggle"
-      aria-expanded="false"
-      aria-controls="navbar-menu"
-      aria-label="Open navigation menu"
-    >
-      <span class="navbar__icon navbar__icon--menu" aria-hidden="true">☰</span>
-      <span class="navbar__icon navbar__icon--close" aria-hidden="true">✕</span>
-    </button>
 
-    <!--
-      PRIMARY LINK LIST
-      An unordered list (<ul>) is the semantic HTML pattern for a group of links.
-      Each <li> wraps one destination so links stay structured and styleable.
-    -->
-    <div class="navbar__menu" id="navbar-menu">
-      <ul class="navbar__links">
-        <!--
-          ACTIVE STATE
-          The "active" class marks the current page so CSS can underline it.
-          On contact.html, Contact is the active link.
-        -->
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="projects.html">Projects</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="admin.html" class="active">Admin</a></li>
-        <li>
-          <button class="theme-toggle" aria-label="Switch to dark mode">
-      <span class="theme-toggle__icon dark-icon">🌙</span>
-      <span class="theme-toggle__icon light-icon">☀️</span>
-    </button>
-        </li>
-      </ul>
-    </div>
-
-  </nav>
-
-  <section id="admin-login-section" style="min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 20px;">
+  <section id="admin-login-section"
+    style="min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 20px;">
     <div class="contact-form-panel" style="width: 100%; max-width: 400px; padding: 40px;">
       <h2 style="text-align: center; margin-bottom: 24px;">Admin Login</h2>
       <form id="admin-login-form">
@@ -73,71 +27,56 @@
           <input type="password" id="login-password" placeholder=" " required />
           <label for="login-password">Password</label>
         </div>
-        <p id="login-error" style="color: var(--danger); font-size: 14px; margin-bottom: 16px; text-align: center; display: none;">Invalid Admin ID or Password</p>
+        <p id="login-error"
+          style="color: var(--danger); font-size: 14px; margin-bottom: 16px; text-align: center; display: none;">Invalid
+          Admin ID or Password</p>
         <button type="submit" class="contact-form__submit" style="width: 100%;">Access Dashboard</button>
       </form>
     </div>
   </section>
 
-  <main class="admin-main" id="admin-main-content" style="display: none;">
-    <section class="admin-header">
-      <h1>Inbox</h1>
-      <p>All contact-form messages, newest first.</p>
-    </section>
+  <div class="admin-dashboard" id="admin-main-content" style="display: none;">
+    <aside class="admin-sidebar">
+      <h2 class="admin-sidebar__title">Admin Panel</h2>
+      <nav class="admin-sidebar__nav">
+        <a href="admin.html" class="admin-sidebar__link active">Messages</a>
+        <a href="admin-home.html" class="admin-sidebar__link">Home Page</a>
+        <a href="admin-about.html" class="admin-sidebar__link">About Section</a>
+        <a href="admin-projects.html" class="admin-sidebar__link">Project Cards</a>
+        <a href="admin-contact.html" class="admin-sidebar__link">Contact Page</a>
+        <a href="admin-navbar.html" class="admin-sidebar__link">Navbar</a>
+        <a href="admin-footer.html" class="admin-sidebar__link">Footer</a>
+        <a href="admin-splash.html" class="admin-sidebar__link">Splash Screen</a>
+      </nav>
+      <button id="admin-logout-btn" class="admin-sidebar__logout">Logout</button>
+    </aside>
 
-    <section class="admin-toolbar">
-      <div id="message-counter">📬 0 messages</div>
-      <label class="admin-toggle">
-        <input type="checkbox" id="unread-only-toggle">
-        <span class="admin-toggle-label">Unread only</span>
-      </label>
-    </section>
+    <main class="admin-content-area">
+      <header class="admin-header">
+        <h1>Inbox</h1>
+        <p>All contact-form messages, newest first.</p>
+      </header>
 
-    <section class="admin-content">
-      <div id="admin-inbox-grid" class="admin-grid">
-        <!-- Cards will be injected here by JS -->
+      <div class="admin-toolbar">
+        <div id="message-counter">📬 0 messages</div>
+        <label class="admin-toggle">
+          <input type="checkbox" id="unread-only-toggle">
+          <span class="admin-toggle-label">Unread only</span>
+        </label>
       </div>
-    </section>
-  </main>
 
-  <footer class="site-footer">
-    <div class="site-footer__inner">
-      <div class="site-footer__columns">
-        <div class="site-footer__brand">
-          <p class="site-footer__name">Atanu Mondal</p>
-          <p class="site-footer__tagline">Designing calm products for noisy industries.</p>
-        </div>
-        <div class="site-footer__column">
-          <h2 class="site-footer__heading">Quick links</h2>
-          <ul class="site-footer__links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="projects.html">Projects</a></li>
-            <li><a href="contact.html">Contact</a></li>
-            <li><a href="admin.html">Admin</a></li>
-        <li>
-          <button class="theme-toggle" aria-label="Switch to dark mode">
-      <span class="theme-toggle__icon dark-icon">🌙</span>
-      <span class="theme-toggle__icon light-icon">☀️</span>
-    </button>
-        </li>
-          </ul>
-        </div>
-        <div class="site-footer__column">
-          <h2 class="site-footer__heading">Social</h2>
-          <ul class="site-footer__social">
-            <li><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">💼</span> LinkedIn</a></li>
-            <li><a href="https://dribbble.com" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">🎨</span> Dribbble</a></li>
-            <li><a href="https://twitter.com" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">🐦</span> Twitter</a></li>
-            <li><a href="mailto:hello@atanudesign.com"><span aria-hidden="true">✉️</span> Email</a></li>
-          </ul>
+      <div class="admin-content">
+        <div id="admin-inbox-grid" class="admin-grid">
+          <!-- Cards will be injected here by JS -->
         </div>
       </div>
-      <p class="site-footer__bottom">© 2026 Atanu Mondal — Built with curiosity and Cursor. <span class="footer-heart">♥</span></p>
-    </div>
-  </footer>
+    </main>
+  </div>
+
+
 
   <script src="supabase-config.js"></script>
   <script src="script.js"></script>
 </body>
+
 </html>

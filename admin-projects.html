@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Projects | UX Designer</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    if (localStorage.getItem("adminLoggedIn") !== "true") {
+      window.location.href = "admin.html";
+    }
+  </script>
+</head>
+
+<body>
+
+  <div class="admin-dashboard" id="admin-main-content">
+    <aside class="admin-sidebar">
+      <h2 class="admin-sidebar__title">Admin Panel</h2>
+      <nav class="admin-sidebar__nav">
+        <a href="admin.html" class="admin-sidebar__link">Messages</a>
+        <a href="admin-home.html" class="admin-sidebar__link">Home Page</a>
+        <a href="admin-about.html" class="admin-sidebar__link">About Section</a>
+        <a href="admin-projects.html" class="admin-sidebar__link active">Project Cards</a>
+        <a href="admin-contact.html" class="admin-sidebar__link">Contact Page</a>
+        <a href="admin-navbar.html" class="admin-sidebar__link">Navbar</a>
+        <a href="admin-footer.html" class="admin-sidebar__link">Footer</a>
+        <a href="admin-splash.html" class="admin-sidebar__link">Splash Screen</a>
+      </nav>
+      <button id="admin-logout-btn" class="admin-sidebar__logout">Logout</button>
+    </aside>
+
+    <main class="admin-content-area">
+      <header class="admin-header">
+        <h1>Project Cards CMS</h1>
+        <p>Manage your portfolio projects.</p>
+      </header>
+
+      <div class="admin-toolbar-actions">
+        <button id="btn-add-project" class="admin-btn admin-btn--primary">+ Add New Project</button>
+        <input type="text" id="project-search" class="admin-search" placeholder="Search projects...">
+        <select id="project-status-filter" class="admin-search" style="flex: 0 1 auto; min-width: 120px;">
+          <option value="all">All Status</option>
+          <option value="published">Published</option>
+          <option value="draft">Draft</option>
+        </select>
+        <button id="btn-bulk-publish" class="admin-btn admin-btn--outline">Bulk Publish</button>
+        <button id="btn-bulk-draft" class="admin-btn admin-btn--outline">Bulk Draft</button>
+        <button id="btn-bulk-delete" class="admin-btn admin-btn--danger">Bulk Delete</button>
+      </div>
+
+      <div class="admin-table-wrapper">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th style="width: 40px;"><input type="checkbox" id="selectAll"></th>
+              <th style="width: 80px;">Preview</th>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Tags</th>
+              <th style="width: 80px;">Order</th>
+              <th style="width: 100px;">Status</th>
+              <th style="width: 140px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="projects-table-body">
+            <tr>
+              <td colspan="8" style="text-align: center;">Loading projects...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add/Edit Modal -->
+  <div class="admin-modal" id="project-modal">
+    <div class="admin-modal__content">
+      <div class="admin-modal__header">
+        <h2 id="modal-title">Add New Project</h2>
+        <button class="admin-modal__close" id="modal-close">&times;</button>
+      </div>
+      <form id="project-form">
+        <input type="hidden" id="project-id">
+        
+        <div class="admin-form-group">
+          <label for="project-title">Title *</label>
+          <input type="text" id="project-title" required>
+        </div>
+        
+        <div class="admin-form-group">
+          <label for="project-short-desc">Short Description *</label>
+          <input type="text" id="project-short-desc" required>
+        </div>
+        
+        <div class="admin-form-group">
+          <label for="project-full-desc">Full Description</label>
+          <textarea id="project-full-desc"></textarea>
+        </div>
+        
+        <div class="admin-form-group">
+          <label for="project-tags">Tags (comma-separated)</label>
+          <input type="text" id="project-tags" placeholder="e.g. Fintech, Research, Figma">
+        </div>
+        
+        <div style="display: flex; gap: 16px;">
+          <div class="admin-form-group" style="flex: 1;">
+            <label for="project-image-url">Image URL</label>
+            <input type="text" id="project-image-url" placeholder="https://placehold.co/640x360">
+          </div>
+          <div class="admin-form-group" style="width: 120px;">
+            <label for="project-bg-color">BG Color</label>
+            <input type="color" id="project-bg-color" value="#4f46e5" style="padding: 0; height: 42px;">
+          </div>
+        </div>
+        
+        <!-- Project Image Upload Section -->
+        <div class="project-image-upload-container">
+          <div class="project-upload-left">
+            <div class="admin-form-group" style="margin-bottom: 0;">
+              <label for="project-local-image" class="project-upload-label">
+                Choose Project Image From Computer
+              </label>
+              <input type="file" id="project-local-image" accept="image/png, image/jpeg, image/jpg, image/webp" style="display: none;">
+              
+              <div class="project-upload-controls" style="margin-top: 12px; display: flex; align-items: center; gap: 12px;">
+                <span id="project-selected-filename" style="font-size: 13px; color: var(--text-muted); max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">No file chosen</span>
+                <button type="button" id="project-upload-btn" class="admin-btn admin-btn--outline" disabled>Upload Image</button>
+              </div>
+              
+              <div id="project-upload-status" class="project-upload-status-el" style="display: none; margin-top: 12px; font-weight: 500;"></div>
+            </div>
+          </div>
+          <div class="project-image-preview-box">
+            <img id="project-image-preview-el" src="" alt="Preview" style="display: none;">
+            <div id="project-color-fallback" class="project-color-fallback-el">No Image</div>
+          </div>
+        </div>
+        
+        <div style="display: flex; gap: 16px;">
+          <div class="admin-form-group" style="flex: 1;">
+            <label for="project-button-text">Button Text</label>
+            <input type="text" id="project-button-text" value="View Case Study →">
+          </div>
+          <div class="admin-form-group" style="flex: 1;">
+            <label for="project-button-link">Button Link</label>
+            <input type="text" id="project-button-link" value="#">
+          </div>
+        </div>
+        
+        <div style="display: flex; gap: 16px;">
+          <div class="admin-form-group" style="flex: 1;">
+            <label for="project-status">Status</label>
+            <select id="project-status">
+              <option value="draft">Draft</option>
+              <option value="published">Published</option>
+            </select>
+          </div>
+          <div class="admin-form-group" style="flex: 1;">
+            <label for="project-display-order">Display Order</label>
+            <input type="number" id="project-display-order" value="0">
+          </div>
+        </div>
+        
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
+          <button type="button" class="admin-btn admin-btn--outline" id="modal-cancel">Cancel</button>
+          <button type="submit" class="admin-btn admin-btn--primary">Save Project</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="supabase-config.js"></script>
+  <script src="project-cms.js"></script>
+</body>
+
+</html>

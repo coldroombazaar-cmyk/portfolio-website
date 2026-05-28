@@ -13,7 +13,7 @@
     The <nav> element groups all main site links in one landmark region
     for accessibility (screen readers announce it as "navigation").
   -->
-  <nav class="navbar">
+  <nav class="navbar" id="public-nav-container">
 
     <!--
       BRAND LINK
@@ -62,19 +62,20 @@
   <main class="about-page">
 
     <header class="about-header">
-      <h1 class="about-header__title">About Atanu</h1>
-      <p class="about-header__subtitle">Designer. Researcher. Coffee-driven optimist.</p>
+      <h1 class="about-header__title" id="about-page-title">About Atanu</h1>
+      <p class="about-header__subtitle" id="about-page-subtitle">Designer. Researcher. Coffee-driven optimist.</p>
     </header>
 
     
     <section class="about-stats">
-      <div class="stat"><span class="stat-num" data-target="5">0</span>+ years experience</div>
-      <div class="stat"><span class="stat-num" data-target="30">0</span>+ shipped projects</div>
-      <div class="stat"><span class="stat-num" data-target="12">0</span> awards</div>
+      <div class="stat"><span class="stat-num" id="about-years-num" data-target="5">0</span><span id="about-years-label">+ years experience</span></div>
+      <div class="stat"><span class="stat-num" id="about-shipped-num" data-target="30">0</span><span id="about-shipped-label">+ shipped projects</span></div>
+      <div class="stat"><span class="stat-num" id="about-awards-num" data-target="12">0</span> <span id="about-awards-label">awards</span></div>
     </section>
 
     <section class="about-bio">
       <img
+        id="about-profile-img"
         class="about-bio__image"
         src="https://placehold.co/400x400/4f46e5/ffffff?text=Atanu"
         alt="Portrait of Atanu"
@@ -82,15 +83,15 @@
         height="400"
       >
       <div class="about-bio__text">
-        <p>I design products at the intersection of business goals and human emotion. My happiest projects are the ones where a measurable metric (conversion, retention, time-on-task) moves <em>and</em> users send unsolicited thank-you messages.</p>
-        <p>Before design, I trained as a psychology major — which still shows up in how I run research. I believe the best interviews feel like good conversations, not interrogations.</p>
-        <p>When I'm not in Figma, you'll find me sketching in cafés, running ultra-marathons very slowly, or trying (and failing) to keep my plants alive.</p>
+        <p id="about-para-1">I design products at the intersection of business goals and human emotion. My happiest projects are the ones where a measurable metric (conversion, retention, time-on-task) moves <em>and</em> users send unsolicited thank-you messages.</p>
+        <p id="about-para-2">Before design, I trained as a psychology major — which still shows up in how I run research. I believe the best interviews feel like good conversations, not interrogations.</p>
+        <p id="about-para-3">When I'm not in Figma, you'll find me sketching in cafés, running ultra-marathons very slowly, or trying (and failing) to keep my plants alive.</p>
       </div>
     </section>
 
     <section class="about-timeline">
       <h2 class="about-timeline__heading">Career Timeline</h2>
-      <ol class="timeline">
+      <ol class="timeline" id="public-timeline-container">
         <li class="timeline__entry reveal">
           <span class="timeline__year">2024</span>
           <div class="timeline__content">
@@ -124,7 +125,7 @@
 
   </main>
 
-  <footer class="site-footer">
+  <footer class="site-footer" id="public-footer-container">
     <div class="site-footer__inner">
       <div class="site-footer__columns">
         <div class="site-footer__brand">
@@ -160,6 +161,8 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
